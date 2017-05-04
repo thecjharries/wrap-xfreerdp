@@ -1,13 +1,14 @@
 import * as Promise from 'bluebird';
 const fsp = require('fs-promise');
-import { Arguments } from './interfaces/Arguments';
+import { WrapXFreeRdpArguments } from './interfaces/WrapXFreeRdpArguments';
+import { WrapXFreeRdpFlags } from './interfaces/WrapXFreeRdpFlags';
 
 export class WrapXFreeRdpOptions {
     public constructor() {
         return this;
     }
 
-    public verifyAndReturnTarget(argv: Arguments): Promise<string> {
+    public verifyAndReturnTarget(argv: WrapXFreeRdpArguments): Promise<string> {
         if (argv._.length < 1) {
             return Promise.reject('No target specified, exiting');
         } else if (argv._.length > 1) {
@@ -30,12 +31,19 @@ export class WrapXFreeRdpOptions {
             });
     }
 
-    public copyAndOverwriteFromFirstToSecond(first: any, second: any): any {
+
+    public copyAndOverwriteFromFirstToSecond(first: WrapXFreeRdpArguments | WrapXFreeRdpFlags, second: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
         for (let key in first) {
             if (first.hasOwnProperty(key)) {
                 second[key] = first[key];
             }
         }
         return second;
+    }
+
+    public attachCliArgumentsToOptions(argv: WrapXFreeRdpArguments, options: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
+        delete argv._;
+        delete argv.configFile;
+        return this.copyAndOverwriteFromFirstToSecond(argv, options);
     }
 }

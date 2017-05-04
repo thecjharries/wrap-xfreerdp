@@ -8,6 +8,10 @@ chai.use(require('chai-as-promised'));
 import * as Promise from 'bluebird';
 let fsp = require('fs-promise');
 
+
+import { WrapXFreeRdpArguments } from '../src/interfaces/WrapXFreeRdpArguments';
+import { WrapXFreeRdpFlags } from '../src/interfaces/WrapXFreeRdpFlags';
+
 import { WrapXFreeRdpOptions } from '../src/WrapXFreeRdpOptions';
 
 describe('WrapXFreeRdpOptions', () => {
@@ -17,7 +21,7 @@ describe('WrapXFreeRdpOptions', () => {
         options = new WrapXFreeRdpOptions();
     });
 
-    describe('verifyAndReturnTarget', () => {
+    describe('.verifyAndReturnTarget()', () => {
         let target: Promise<string>;
 
         it('should verify and return a correct target', () => {
@@ -37,7 +41,7 @@ describe('WrapXFreeRdpOptions', () => {
 
     });
 
-    describe('loadConfigFrom', () => {
+    describe('.loadConfigFrom()', () => {
         describe('with no specified config', () => {
             let userSpecified: boolean = false;
 
@@ -80,13 +84,13 @@ describe('WrapXFreeRdpOptions', () => {
         });
     });
 
-    describe('copyAndOverwriteFromFirstToSecond', () => {
-        let first: any;
-        let second: any;
+    describe('.copyAndOverwriteFromFirstToSecond()', () => {
+        let first: WrapXFreeRdpFlags;
+        let second: WrapXFreeRdpFlags;
 
         beforeEach(() => {
-            first = {firstOnly: true, shared: true};
-            second = {shared: false, secondOnly: true};
+            first = {firstOnly: true, shared: true, target: 'first'};
+            second = {shared: false, secondOnly: true, target: 'second'};
             second = options.copyAndOverwriteFromFirstToSecond(first, second);
         })
 
@@ -96,10 +100,32 @@ describe('WrapXFreeRdpOptions', () => {
 
         it('should overwrite common properties', () => {
             second.shared.should.be.true;
+            second.target.should.be.equal('first');
         })
 
         it('should ignore properties only in the second', () => {
             second.secondOnly.should.be.true;
+        })
+    });
+
+    describe('.attachCliArgumentsToOptions()', () => {
+        let argv: WrapXFreeRdpArguments;
+        let flags: WrapXFreeRdpFlags;
+        let copySpy: sinon.SinonSpy;
+
+        beforeEach(() => {
+            argv = {firstOnly: true, shared: true, target: 'first', '_': []};
+            flags = {shared: false, secondOnly: true, target: 'second'};
+            copySpy = sinon.stub(options, 'copyAndOverwriteFromFirstToSecond');
+        })
+
+        it('should call the copy method', () => {
+            flags = options.attachCliArgumentsToOptions(argv, flags);
+            copySpy.called.should.be.true;
+        });
+
+        afterEach(() => {
+            sinon.restore(options.copyAndOverwriteFromFirstToSecond);
         })
     });
 });

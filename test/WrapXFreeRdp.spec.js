@@ -14,7 +14,7 @@ describe('WrapXFreeRdpOptions', () => {
     beforeEach(() => {
         options = new WrapXFreeRdpOptions_1.WrapXFreeRdpOptions();
     });
-    describe('verifyAndReturnTarget', () => {
+    describe('.verifyAndReturnTarget()', () => {
         let target;
         it('should verify and return a correct target', () => {
             target = options.verifyAndReturnTarget({ '_': ['testTarget'] });
@@ -29,7 +29,7 @@ describe('WrapXFreeRdpOptions', () => {
             return target.should.be.rejected;
         });
     });
-    describe('loadConfigFrom', () => {
+    describe('.loadConfigFrom()', () => {
         describe('with no specified config', () => {
             let userSpecified = false;
             it('should be empty when a file is empty', () => {
@@ -64,12 +64,12 @@ describe('WrapXFreeRdpOptions', () => {
             fsp.readJson.restore();
         });
     });
-    describe('copyAndOverwriteFromFirstToSecond', () => {
+    describe('.copyAndOverwriteFromFirstToSecond()', () => {
         let first;
         let second;
         beforeEach(() => {
-            first = { firstOnly: true, shared: true };
-            second = { shared: false, secondOnly: true };
+            first = { firstOnly: true, shared: true, target: 'first' };
+            second = { shared: false, secondOnly: true, target: 'second' };
             second = options.copyAndOverwriteFromFirstToSecond(first, second);
         });
         it('should copy new properties over', () => {
@@ -77,9 +77,27 @@ describe('WrapXFreeRdpOptions', () => {
         });
         it('should overwrite common properties', () => {
             second.shared.should.be.true;
+            second.target.should.be.equal('first');
         });
         it('should ignore properties only in the second', () => {
             second.secondOnly.should.be.true;
+        });
+    });
+    describe('.attachCliArgumentsToOptions()', () => {
+        let argv;
+        let flags;
+        let copySpy;
+        beforeEach(() => {
+            argv = { firstOnly: true, shared: true, target: 'first', '_': [] };
+            flags = { shared: false, secondOnly: true, target: 'second' };
+            copySpy = sinon.stub(options, 'copyAndOverwriteFromFirstToSecond');
+        });
+        it('should call the copy method', () => {
+            flags = options.attachCliArgumentsToOptions(argv, flags);
+            copySpy.called.should.be.true;
+        });
+        afterEach(() => {
+            sinon.restore(options.copyAndOverwriteFromFirstToSecond);
         });
     });
 });

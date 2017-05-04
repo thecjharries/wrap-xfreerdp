@@ -36,5 +36,10 @@ class WrapXFreeRdpOptions {
         }
         return second;
     }
+    attachCliArgumentsToOptions(argv, options) {
+        delete argv._;
+        delete argv.configFile;
+        return this.copyAndOverwriteFromFirstToSecond(argv, options);
+    }
 }
 exports.WrapXFreeRdpOptions = WrapXFreeRdpOptions;
