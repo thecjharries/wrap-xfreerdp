@@ -31,7 +31,6 @@ export class WrapXFreeRdpOptions {
             });
     }
 
-
     public copyAndOverwriteFromFirstToSecond(first: WrapXFreeRdpArguments | WrapXFreeRdpFlags, second: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
         for (let key in first) {
             if (first.hasOwnProperty(key)) {
@@ -41,7 +40,7 @@ export class WrapXFreeRdpOptions {
         return second;
     }
 
-    public attachCliArgumentsToOptions(argv: WrapXFreeRdpArguments, options: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
+    public attachCliArgumentsToFlags(argv: WrapXFreeRdpArguments, options: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
         delete argv._;
         delete argv.configFile;
         return this.copyAndOverwriteFromFirstToSecond(argv, options);

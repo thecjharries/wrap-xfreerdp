@@ -120,7 +120,7 @@ describe('WrapXFreeRdpOptions', () => {
         })
 
         it('should call the copy method', () => {
-            flags = options.attachCliArgumentsToOptions(argv, flags);
+            flags = options.attachCliArgumentsToFlags(argv, flags);
             copySpy.called.should.be.true;
         });
 
