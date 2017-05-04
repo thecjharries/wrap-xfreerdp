@@ -28,5 +28,13 @@ class WrapXFreeRdpOptions {
             return {};
         });
     }
+    copyAndOverwriteFromFirstToSecond(first, second) {
+        for (let key in first) {
+            if (first.hasOwnProperty(key)) {
+                second[key] = first[key];
+            }
+        }
+        return second;
+    }
 }
 exports.WrapXFreeRdpOptions = WrapXFreeRdpOptions;

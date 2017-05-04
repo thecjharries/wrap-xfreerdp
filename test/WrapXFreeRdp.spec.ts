@@ -79,4 +79,27 @@ describe('WrapXFreeRdpOptions', () => {
             fsp.readJson.restore();
         });
     });
+
+    describe('copyAndOverwriteFromFirstToSecond', () => {
+        let first: any;
+        let second: any;
+
+        beforeEach(() => {
+            first = {firstOnly: true, shared: true};
+            second = {shared: false, secondOnly: true};
+            second = options.copyAndOverwriteFromFirstToSecond(first, second);
+        })
+
+        it('should copy new properties over', () => {
+            second.firstOnly.should.be.true;
+        });
+
+        it('should overwrite common properties', () => {
+            second.shared.should.be.true;
+        })
+
+        it('should ignore properties only in the second', () => {
+            second.secondOnly.should.be.true;
+        })
+    });
 });

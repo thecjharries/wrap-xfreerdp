@@ -16,7 +16,7 @@ export class WrapXFreeRdpOptions {
         return Promise.resolve(argv._[0]);
     }
 
-    public loadConfigFrom(path: string, userSpecified: boolean) {
+    public loadConfigFrom(path: string, userSpecified: boolean): Promise<any> {
         return fsp
             .readJson(path)
             .then((contents: any) => {
@@ -28,5 +28,14 @@ export class WrapXFreeRdpOptions {
                 }
                 return {};
             });
+    }
+
+    public copyAndOverwriteFromFirstToSecond(first: any, second: any): any {
+        for (let key in first) {
+            if (first.hasOwnProperty(key)) {
+                second[key] = first[key];
+            }
+        }
+        return second;
     }
 }
