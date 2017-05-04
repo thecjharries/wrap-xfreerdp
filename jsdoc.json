@@ -1,0 +1,20 @@
+{
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "opts": {
+        "template": "templates/default",
+        "encoding": "utf8",
+        "destination": "./docs/jsdoc/",
+        "recurse": true,
+        "readme": "./README.md"
+    },
+    "source": {
+        "include": [
+            "."
+        ],
+        "exclude": [
+            "node_modules"
+        ]
+    }
+}

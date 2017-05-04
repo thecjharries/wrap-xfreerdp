@@ -1,0 +1,14 @@
+[
+    {
+        "longhand": "user",
+        "regex": "^[\"']?[\\w\\-]+[\"']?$"
+    },
+    {
+        "longhand": "domain",
+        "regex": "^[\"']?[\\w\\-]+[\"']?$"
+    },
+    {
+        "longhand": "geometry",
+        "regex": "^[\"']?\\d+x\\d+[\"']?$"
+    }
+]
