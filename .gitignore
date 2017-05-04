@@ -3,3 +3,7 @@
 node_modules
 npm-debug.log
 .gitconfig
+src/**/*.js
+src/**/*.map
+test/**/*.js
+test/**/*.map
