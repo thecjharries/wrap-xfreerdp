@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "wrap-xfreerdp",
   "version": "1.0.0",
   "description": "Simple wrapper for xfreerdp (I use a system without Remmina support)",
