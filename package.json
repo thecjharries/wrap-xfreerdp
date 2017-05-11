@@ -1,59 +1,60 @@
 {
-    "name": "wrap-xfreerdp",
-    "version": "1.0.0",
-    "description": "Simple wrapper for xfreerdp (I use a system without Remmina support)",
-    "main": "index.js",
-    "scripts": {
-        "build": "tsc",
-        "test": "NODE_ENV=test nyc mocha"
-    },
-    "keywords": [],
-    "author": "CJ Harries <cj@wizardsoftheweb.pro>",
-    "license": "MIT",
-    "devDependencies": {
-        "@types/bluebird": "^3.5.3",
-        "@types/chai-as-promised": "0.0.30",
-        "@types/fs-extra": "^3.0.0",
-        "@types/mocha": "^2.2.41",
-        "@types/node": "^7.0.16",
-        "@types/sinon": "^2.2.1",
-        "chai": "^3.5.0",
-        "chai-as-promised": "^6.0.0",
-        "istanbul": "^0.4.5",
-        "mocha": "^3.3.0",
-        "mocha-typescript": "^1.1.2",
-        "sinon": "^2.2.0",
-        "source-map-support": "^0.4.15",
-        "ts-node": "^3.0.4",
-        "typescript": "^2.3.2"
-    },
-    "dependencies": {
-        "bluebird": "^3.5.0",
-        "fs-promise": "^2.0.2",
-        "minimist": "^1.2.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com:thecjharries/wrap-xfreerdp.git"
-    },
-    "nyc": {
-        "include": [
-            "src/**/*.ts"
-        ],
-        "exclude": [
-            "src/interfaces"
-        ],
-        "extension": [
-            ".ts"
-        ],
-        "require": [
-            "ts-node/register"
-        ],
-        "reporter": [
-            "json",
-            "html",
-            "text-summary"
-        ],
-        "all": true
-    }
+  "name": "wrap-xfreerdp",
+  "version": "1.0.0",
+  "description": "Simple wrapper for xfreerdp (I use a system without Remmina support)",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "NODE_ENV=test nyc mocha"
+  },
+  "keywords": [],
+  "author": "CJ Harries <cj@wizardsoftheweb.pro>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bluebird": "^3.5.3",
+    "@types/chai-as-promised": "0.0.30",
+    "@types/fs-extra": "^3.0.0",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.16",
+    "@types/sinon": "^2.2.1",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.3.0",
+    "mocha-typescript": "^1.1.2",
+    "nyc": "^10.3.2",
+    "sinon": "^2.2.0",
+    "source-map-support": "^0.4.15",
+    "ts-node": "^3.0.4",
+    "typescript": "^2.3.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "fs-promise": "^2.0.2",
+    "minimist": "^1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:thecjharries/wrap-xfreerdp.git"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/interfaces"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html",
+      "text-summary"
+    ],
+    "all": true
+  }
 }
