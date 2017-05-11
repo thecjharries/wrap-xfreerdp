@@ -7,3 +7,5 @@ src/**/*.js
 src/**/*.map
 test/**/*.js
 test/**/*.map
+.nyc_output
+coverage

@@ -2,3 +2,5 @@
 --reporter spec
 --ui mocha-typescript
 --require source-map-support/register
+--compilers ts:ts-node/register
+--bail
