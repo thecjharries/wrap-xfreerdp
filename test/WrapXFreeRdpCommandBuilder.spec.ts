@@ -12,15 +12,15 @@ chai.use(require('chai-as-promised'));
 const fsp = require('fs-promise');
 
 // Interfaces
-import { WrapXFreeRdpArguments } from '../src/interfaces/WrapXFreeRdpArguments';
-import { WrapXFreeRdpFlags } from '../src/interfaces/WrapXFreeRdpFlags';
-import { WrapXFreeRdpValidator } from '../src/interfaces/WrapXFreeRdpValidator';
+import { IWrapXFreeRdpArguments } from '../src/interfaces/IWrapXFreeRdpArguments';
+import { IWrapXFreeRdpFlags } from '../src/interfaces/IWrapXFreeRdpFlags';
+import { IWrapXFreeRdpValidator } from '../src/interfaces/IWrapXFreeRdpValidator';
 // Classes
 import { WrapXFreeRdpCommandBuilder } from '../src/WrapXFreeRdpCommandBuilder';
 import { WrapXFreeRdpOptions } from '../src/WrapXFreeRdpOptions';
 
 describe('WrapXFreeRdpCommandBuilder', () => {
-    let argv: WrapXFreeRdpArguments;
+    let argv: IWrapXFreeRdpArguments;
     let commandBuilder: WrapXFreeRdpCommandBuilder;
 
     beforeEach(() => {
@@ -47,7 +47,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
         });
 
         it('should load proper validators', () => {
-            return commandBuilder.loadValidators().then((validators: WrapXFreeRdpValidator[]) => {
+            return commandBuilder.loadValidators().then((validators: IWrapXFreeRdpValidator[]) => {
                 readJsonStub.callCount.should.be.equal(1);
                 validators.should.be.a('Array');
                 validators.length.should.be.equal(3);
@@ -64,7 +64,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                 .then(() => {
                     return commandBuilder.loadValidators();
                 })
-                .then((validators: WrapXFreeRdpValidator[]) => {
+                .then((validators: IWrapXFreeRdpValidator[]) => {
                     readJsonStub.callCount.should.be.equal(1);
                     validators.should.be.a('Array');
                     validators.length.should.be.equal(3);

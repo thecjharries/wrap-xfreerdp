@@ -11,8 +11,8 @@ import * as Promise from 'bluebird';
 const fsp = require('fs-promise');
 
 
-import { WrapXFreeRdpArguments } from '../src/interfaces/WrapXFreeRdpArguments';
-import { WrapXFreeRdpFlags } from '../src/interfaces/WrapXFreeRdpFlags';
+import { IWrapXFreeRdpArguments } from '../src/interfaces/IWrapXFreeRdpArguments';
+import { IWrapXFreeRdpFlags } from '../src/interfaces/IWrapXFreeRdpFlags';
 
 import { WrapXFreeRdpOptions } from '../src/WrapXFreeRdpOptions';
 
@@ -88,8 +88,8 @@ describe('WrapXFreeRdpOptions', () => {
 
     // TODO: check the recursive parts
     describe('.copyAndOverwriteFromFirstToSecond()', () => {
-        let first: WrapXFreeRdpFlags;
-        let second: WrapXFreeRdpFlags;
+        let first: IWrapXFreeRdpFlags;
+        let second: IWrapXFreeRdpFlags;
 
         beforeEach(() => {
             first = { firstOnly: true, shared: true, target: 'first' };
@@ -115,8 +115,8 @@ describe('WrapXFreeRdpOptions', () => {
     });
 
     describe('.attachCliArgumentsToOptions()', () => {
-        let argv: WrapXFreeRdpArguments;
-        let flags: WrapXFreeRdpFlags;
+        let argv: IWrapXFreeRdpArguments;
+        let flags: IWrapXFreeRdpFlags;
         let copyStub: sinon.SinonStub;
 
         beforeEach(() => {
@@ -137,8 +137,8 @@ describe('WrapXFreeRdpOptions', () => {
     });
 
     describe('.loadConfig()', () => {
-        let argv: WrapXFreeRdpArguments;
-        let flags: WrapXFreeRdpFlags;
+        let argv: IWrapXFreeRdpArguments;
+        let flags: IWrapXFreeRdpFlags;
         let targetStub: sinon.SinonStub;
         let copyStub: sinon.SinonStub;
         let loadStub: sinon.SinonStub;
@@ -249,7 +249,7 @@ describe('WrapXFreeRdpOptions', () => {
     });
 
     describe('.loadAndAttachConfig()', () => {
-        let argv: WrapXFreeRdpArguments;
+        let argv: IWrapXFreeRdpArguments;
         let loadStub: sinon.SinonStub;
         let attachStub: sinon.SinonStub;
 
