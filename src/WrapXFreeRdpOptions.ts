@@ -1,19 +1,19 @@
 import * as Promise from 'bluebird';
 /* tslint:disable-next-line:no-var-requires */
 const fsp = require('fs-promise');
-import { WrapXFreeRdpArguments } from './interfaces/WrapXFreeRdpArguments';
-import { WrapXFreeRdpFlags } from './interfaces/WrapXFreeRdpFlags';
+import { IWrapXFreeRdpArguments } from './interfaces/IWrapXFreeRdpArguments';
+import { IWrapXFreeRdpFlags } from './interfaces/IWrapXFreeRdpFlags';
 
 export class WrapXFreeRdpOptions {
     private DIRECTORY_CONFIG_PATH: string = './.wrapxfreerdprc';
     private GLOBAL_CONFIG_PATH: string = '~/.wrapxfreerdprc';
-    private internalFlags: WrapXFreeRdpFlags = null;
+    private internalFlags: IWrapXFreeRdpFlags = null;
 
     public constructor() {
         return this;
     }
 
-    public verifyAndReturnTarget(argv: WrapXFreeRdpArguments): Promise<string> {
+    public verifyAndReturnTarget(argv: IWrapXFreeRdpArguments): Promise<string> {
         if (argv._.length < 1) {
             return Promise.reject('No target specified, exiting');
         } else if (argv._.length > 1) {
@@ -37,10 +37,10 @@ export class WrapXFreeRdpOptions {
     }
 
     public copyAndOverwriteFromFirstToSecond(
-        first: WrapXFreeRdpArguments | WrapXFreeRdpFlags,
+        first: IWrapXFreeRdpArguments | IWrapXFreeRdpFlags,
         /* tslint:disable-next-line:trailing-comma */
-        second: WrapXFreeRdpFlags
-    ): WrapXFreeRdpFlags {
+        second: IWrapXFreeRdpFlags
+    ): IWrapXFreeRdpFlags {
         for (const key in first) {
             if (first.hasOwnProperty(key)) {
                 if (first[key] !== null && typeof first[key] === 'object') {
@@ -56,13 +56,13 @@ export class WrapXFreeRdpOptions {
         return second;
     }
 
-    public attachCliArgumentsToFlags(argv: WrapXFreeRdpArguments, options: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
+    public attachCliArgumentsToFlags(argv: IWrapXFreeRdpArguments, options: IWrapXFreeRdpFlags): IWrapXFreeRdpFlags {
         delete argv._;
         delete argv.configFile;
         return this.copyAndOverwriteFromFirstToSecond(argv, options);
     }
 
-    public loadConfig(argv: WrapXFreeRdpArguments): Promise<WrapXFreeRdpFlags> {
+    public loadConfig(argv: IWrapXFreeRdpArguments): Promise<IWrapXFreeRdpFlags> {
         let target = '';
         return this.verifyAndReturnTarget(argv)
             .then((verifiedTarget: string) => {
@@ -71,11 +71,11 @@ export class WrapXFreeRdpOptions {
             .then(() => {
                 return this.loadConfigFrom(this.GLOBAL_CONFIG_PATH, false);
             })
-            .then((globalOptions: WrapXFreeRdpFlags) => {
+            .then((globalOptions: IWrapXFreeRdpFlags) => {
                 this.internalFlags = globalOptions;
                 return this.loadConfigFrom(this.DIRECTORY_CONFIG_PATH, false);
             })
-            .then((directoryOptions: WrapXFreeRdpFlags) => {
+            .then((directoryOptions: IWrapXFreeRdpFlags) => {
                 this.internalFlags = this.copyAndOverwriteFromFirstToSecond(directoryOptions, this._flags);
                 if (argv.configFile) {
                     return this.loadConfigFrom(argv.configFile, true)
@@ -98,14 +98,14 @@ export class WrapXFreeRdpOptions {
             });
     }
 
-    public loadAndAttachConfig(argv: WrapXFreeRdpArguments): Promise<WrapXFreeRdpFlags> {
+    public loadAndAttachConfig(argv: IWrapXFreeRdpArguments): Promise<IWrapXFreeRdpFlags> {
         return this.loadConfig(argv)
-            .then((options: WrapXFreeRdpFlags) => {
+            .then((options: IWrapXFreeRdpFlags) => {
                 return this.attachCliArgumentsToFlags(argv, options);
             });
     }
 
-    public get flags(): WrapXFreeRdpFlags {
+    public get flags(): IWrapXFreeRdpFlags {
         return this.internalFlags;
     }
 }

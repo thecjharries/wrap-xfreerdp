@@ -2,26 +2,26 @@ import * as Promise from 'bluebird';
 /* tslint:disable-next-line:no-var-requires */
 const fsp = require('fs-promise');
 import * as path from 'path';
-import { WrapXFreeRdpArguments } from './interfaces/WrapXFreeRdpArguments';
-import { WrapXFreeRdpFlags } from './interfaces/WrapXFreeRdpFlags';
-import { WrapXFreeRdpValidator } from './interfaces/WrapXFreeRdpValidator';
+import { IWrapXFreeRdpArguments } from './interfaces/IWrapXFreeRdpArguments';
+import { IWrapXFreeRdpFlags } from './interfaces/IWrapXFreeRdpFlags';
+import { IWrapXFreeRdpValidator } from './interfaces/IWrapXFreeRdpValidator';
 import { WrapXFreeRdpOptions } from './WrapXFreeRdpOptions';
 
 
 export class WrapXFreeRdpCommandBuilder {
     private options: WrapXFreeRdpOptions;
     private JSON_LOCATION: string = path.join(__dirname, 'config/flags-and-regex.json');
-    private validatorPromise: Promise<WrapXFreeRdpValidator[]> = null;
+    private validatorPromise: Promise<IWrapXFreeRdpValidator[]> = null;
     private loadEverythingPromise: Promise<any[]> = null;
-    private argv: WrapXFreeRdpArguments;
+    private argv: IWrapXFreeRdpArguments;
     private internalCall: string = 'xfreerdp';
 
-    public constructor(argv: WrapXFreeRdpArguments) {
+    public constructor(argv: IWrapXFreeRdpArguments) {
         this.options = new WrapXFreeRdpOptions();
         this.argv = argv;
     }
 
-    public loadValidators(): Promise<WrapXFreeRdpValidator[]> {
+    public loadValidators(): Promise<IWrapXFreeRdpValidator[]> {
         if (this.validatorPromise === null) {
             this.validatorPromise = fsp.readJson(this.JSON_LOCATION);
         }
