@@ -268,4 +268,10 @@ describe('WrapXFreeRdpOptions', () => {
             (<sinon.SinonStub>options.loadConfig).restore();
         });
     });
+
+    describe('get flags', () => {
+        it('should return default when nothing has been set', () => {
+            options.flags.should.be.null;
+        });
+    })
 });

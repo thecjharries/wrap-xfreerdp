@@ -115,7 +115,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
     });
 
     describe('get call()', () => {
-        it('should return default when nothing has be set', () => {
+        it('should return default when nothing has been set', () => {
             commandBuilder.call.should.be.equal('xfreerdp');
         })
     });

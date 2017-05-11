@@ -6,7 +6,7 @@ import { WrapXFreeRdpFlags } from './interfaces/WrapXFreeRdpFlags';
 export class WrapXFreeRdpOptions {
     private DIRECTORY_CONFIG_PATH: string = './.wrapxfreerdprc';
     private GLOBAL_CONFIG_PATH: string = '~/.wrapxfreerdprc';
-    private _flags: WrapXFreeRdpFlags;
+    private _flags: WrapXFreeRdpFlags = null;
 
     public constructor() {
         return this;
