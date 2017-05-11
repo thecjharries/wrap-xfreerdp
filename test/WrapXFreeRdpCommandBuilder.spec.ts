@@ -114,5 +114,15 @@ describe('WrapXFreeRdpCommandBuilder', () => {
         });
     });
 
+    describe('get call()', () => {
+        it('should return default when nothing has be set', () => {
+            commandBuilder.call.should.be.equal('xfreerdp');
+        })
+    });
 
+    describe('.attachPlugins()', () => {
+        it('should do nothing with no plugins', () => {
+            commandBuilder.attachPlugins();
+        });
+    });
 });

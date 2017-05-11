@@ -12,7 +12,7 @@ export class WrapXFreeRdpCommandBuilder {
     private validatorPromise: Promise<Array<WrapXFreeRdpValidator>> = null;
     private loadEverythingPromise: Promise<Array<any>> = null;
     private argv: WrapXFreeRdpArguments;
-    private call: string = 'xfreerdp';
+    private _call: string = 'xfreerdp';
 
     public constructor(argv: WrapXFreeRdpArguments) {
         this.options = new WrapXFreeRdpOptions();
@@ -34,6 +34,10 @@ export class WrapXFreeRdpCommandBuilder {
             ]);
         }
         return this.loadEverythingPromise;
+    }
+
+    public get call(): string {
+        return this._call;
     }
 
     public attachPlugins() {
