@@ -26,6 +26,7 @@
     "sinon": "^2.2.0",
     "source-map-support": "^0.4.15",
     "ts-node": "^3.0.4",
+    "tslint": "^5.2.0",
     "typescript": "^2.3.2"
   },
   "dependencies": {

@@ -1,4 +1,5 @@
 import * as Promise from 'bluebird';
+/* tslint:disable-next-line:no-var-requires */
 const fsp = require('fs-promise');
 import { WrapXFreeRdpArguments } from './interfaces/WrapXFreeRdpArguments';
 import { WrapXFreeRdpFlags } from './interfaces/WrapXFreeRdpFlags';
@@ -6,7 +7,7 @@ import { WrapXFreeRdpFlags } from './interfaces/WrapXFreeRdpFlags';
 export class WrapXFreeRdpOptions {
     private DIRECTORY_CONFIG_PATH: string = './.wrapxfreerdprc';
     private GLOBAL_CONFIG_PATH: string = '~/.wrapxfreerdprc';
-    private _flags: WrapXFreeRdpFlags = null;
+    private internalFlags: WrapXFreeRdpFlags = null;
 
     public constructor() {
         return this;
@@ -35,8 +36,12 @@ export class WrapXFreeRdpOptions {
             });
     }
 
-    public copyAndOverwriteFromFirstToSecond(first: WrapXFreeRdpArguments | WrapXFreeRdpFlags, second: WrapXFreeRdpFlags): WrapXFreeRdpFlags {
-        for (let key in first) {
+    public copyAndOverwriteFromFirstToSecond(
+        first: WrapXFreeRdpArguments | WrapXFreeRdpFlags,
+        /* tslint:disable-next-line:trailing-comma */
+        second: WrapXFreeRdpFlags
+    ): WrapXFreeRdpFlags {
+        for (const key in first) {
             if (first.hasOwnProperty(key)) {
                 if (first[key] !== null && typeof first[key] === 'object') {
                     if (!second.hasOwnProperty(key)) {
@@ -67,29 +72,29 @@ export class WrapXFreeRdpOptions {
                 return this.loadConfigFrom(this.GLOBAL_CONFIG_PATH, false);
             })
             .then((globalOptions: WrapXFreeRdpFlags) => {
-                this._flags = globalOptions;
+                this.internalFlags = globalOptions;
                 return this.loadConfigFrom(this.DIRECTORY_CONFIG_PATH, false);
             })
             .then((directoryOptions: WrapXFreeRdpFlags) => {
-                this._flags = this.copyAndOverwriteFromFirstToSecond(directoryOptions, this._flags);
+                this.internalFlags = this.copyAndOverwriteFromFirstToSecond(directoryOptions, this._flags);
                 if (argv.configFile) {
                     return this.loadConfigFrom(argv.configFile, true)
                         .then((randomOptions) => {
                             return this.copyAndOverwriteFromFirstToSecond(randomOptions, this._flags);
                         });
                 }
-                return this._flags;
+                return this.internalFlags;
             })
             .then((options) => {
-                this._flags = options;
+                this.internalFlags = options;
                 if (options[target]) {
                     return this.copyAndOverwriteFromFirstToSecond(options[target], this._flags);
                 }
-                return this._flags;
+                return this.internalFlags;
             })
             .then((options) => {
-                this._flags = options;
-                return this._flags;
+                this.internalFlags = options;
+                return this.internalFlags;
             });
     }
 
@@ -101,6 +106,6 @@ export class WrapXFreeRdpOptions {
     }
 
     public get flags(): WrapXFreeRdpFlags {
-        return this._flags;
+        return this.internalFlags;
     }
 }

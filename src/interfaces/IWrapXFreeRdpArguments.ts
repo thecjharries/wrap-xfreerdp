@@ -1,6 +1,6 @@
-export interface WrapXFreeRdpArguments {
-    [key:string]: any;
-    _: Array<string>;
+export interface IWrapXFreeRdpArguments {
+    [key: string]: any;
+    _: string[];
     configFile?: string;
     d?: string;
     domain?: string;
@@ -8,4 +8,4 @@ export interface WrapXFreeRdpArguments {
     geometry?: string;
     u?: string;
     user?: string;
-};
+}

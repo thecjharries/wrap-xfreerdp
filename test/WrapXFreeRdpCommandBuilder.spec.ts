@@ -1,27 +1,30 @@
+import * as Promise from 'bluebird';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
+
 const assert = chai.assert;
 const expect = chai.expect;
 const should = chai.should();
+/* tslint:disable-next-line:no-var-requires */
 chai.use(require('chai-as-promised'));
 
-import * as Promise from 'bluebird';
-let fsp = require('fs-promise');
+/* tslint:disable-next-line:no-var-requires */
+const fsp = require('fs-promise');
 
 // Interfaces
 import { WrapXFreeRdpArguments } from '../src/interfaces/WrapXFreeRdpArguments';
 import { WrapXFreeRdpFlags } from '../src/interfaces/WrapXFreeRdpFlags';
 import { WrapXFreeRdpValidator } from '../src/interfaces/WrapXFreeRdpValidator';
 // Classes
-import { WrapXFreeRdpOptions } from '../src/WrapXFreeRdpOptions';
 import { WrapXFreeRdpCommandBuilder } from '../src/WrapXFreeRdpCommandBuilder';
+import { WrapXFreeRdpOptions } from '../src/WrapXFreeRdpOptions';
 
 describe('WrapXFreeRdpCommandBuilder', () => {
     let argv: WrapXFreeRdpArguments;
     let commandBuilder: WrapXFreeRdpCommandBuilder;
 
     beforeEach(() => {
-        argv = { firstOnly: true, shared: true, target: 'first', '_': ['a'] };
+        argv = { firstOnly: true, shared: true, target: 'first', _: ['a'] };
         commandBuilder = new WrapXFreeRdpCommandBuilder(argv);
     });
 
@@ -37,18 +40,18 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                 [
                     { longhand: 'user', regex: '^["\']?[\\w\\-]+["\']?$' },
                     { longhand: 'domain', regex: '^["\']?[\\w\\-]+["\']?$' },
-                    { longhand: 'geometry', regex: '^["\']?\\d+x\\d+["\']?$' }
-                ]
+                    { longhand: 'geometry', regex: '^["\']?\\d+x\\d+["\']?$' },
+                ],
             );
             readJsonStub.resolves([]);
         });
 
         it('should load proper validators', () => {
-            return commandBuilder.loadValidators().then((validators: Array<WrapXFreeRdpValidator>) => {
+            return commandBuilder.loadValidators().then((validators: WrapXFreeRdpValidator[]) => {
                 readJsonStub.callCount.should.be.equal(1);
                 validators.should.be.a('Array');
                 validators.length.should.be.equal(3);
-                for (let validator of validators) {
+                for (const validator of validators) {
                     validator.should.be.a('object');
                     validator.should.have.property('longhand');
                     validator.should.have.property('regex');
@@ -61,15 +64,15 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                 .then(() => {
                     return commandBuilder.loadValidators();
                 })
-                .then((validators: Array<WrapXFreeRdpValidator>) => {
+                .then((validators: WrapXFreeRdpValidator[]) => {
                     readJsonStub.callCount.should.be.equal(1);
                     validators.should.be.a('Array');
                     validators.length.should.be.equal(3);
-                })
+                });
         });
 
         afterEach(() => {
-            (<sinon.SinonStub>fsp.readJson).restore();
+            (fsp.readJson as sinon.SinonStub).restore();
         });
     });
 
@@ -83,11 +86,16 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                 [
                     { longhand: 'user', regex: '^["\']?[\\w\\-]+["\']?$' },
                     { longhand: 'domain', regex: '^["\']?[\\w\\-]+["\']?$' },
-                    { longhand: 'geometry', regex: '^["\']?\\d+x\\d+["\']?$' }
-                ]
+                    { longhand: 'geometry', regex: '^["\']?\\d+x\\d+["\']?$' },
+                ],
             );
             readJsonStub.resolves([]);
-            loadAndAttachConfigStub = sinon.stub(WrapXFreeRdpOptions.prototype, 'loadAndAttachConfig').resolves({ loaded: true });
+            loadAndAttachConfigStub = sinon.stub(
+                WrapXFreeRdpOptions.prototype,
+                /* tslint:disable-next-line:trailing-comma */
+                'loadAndAttachConfig'
+            )
+                .resolves({ loaded: true });
         });
 
         it('should be a singleton', () => {
@@ -95,22 +103,22 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                 .then(() => {
                     return commandBuilder.loadEverything();
                 })
-                .then((everything: Array<any>) => {
+                .then((everything: any[]) => {
                     readJsonStub.callCount.should.be.equal(1);
                     everything.should.be.a('Array');
                     everything.length.should.be.equal(2);
                     everything[0].should.be.a('Array');
                     everything[0].length.should.be.equal(3);
                     everything[1].should.be.deep.equal({ loaded: true });
-                })
+                });
         });
 
         afterEach(() => {
-            (<sinon.SinonStub>WrapXFreeRdpOptions.prototype.loadAndAttachConfig).restore();
+            (WrapXFreeRdpOptions.prototype.loadAndAttachConfig as sinon.SinonStub).restore();
         });
 
         afterEach(() => {
-            (<sinon.SinonStub>fsp.readJson).restore();
+            (fsp.readJson as sinon.SinonStub).restore();
         });
     });
 
@@ -120,7 +128,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
 
         beforeEach(() => {
             // TODO: remove any cast on @types/sinon update
-            flagsStub = (<any>sinon.stub(WrapXFreeRdpOptions.prototype, 'flags'))
+            flagsStub = (sinon.stub(WrapXFreeRdpOptions.prototype, 'flags') as any);
         });
 
         it('should do nothing with no plugins', () => {
@@ -130,7 +138,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
             commandBuilder.attachPlugins();
             commandBuilder.call.should.be.equal('xfreerdp');
             flagsStub.get(() => {
-                let retVal: any = {};
+                const retVal: any = {};
                 retVal.plugins = [];
                 return retVal;
             });
@@ -141,7 +149,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
 
         it('should attach an array of plugin', () => {
             flagsStub.get(() => {
-                return { plugins: ['cliprdr', 'cliprdr2'] }
+                return { plugins: ['cliprdr', 'cliprdr2'] };
             });
             commandBuilder.attachPlugins();
             commandBuilder.call.should.be.equal('xfreerdp --plugin cliprdr --plugin cliprdr2');
@@ -155,6 +163,6 @@ describe('WrapXFreeRdpCommandBuilder', () => {
     describe('get call()', () => {
         it('should return default when nothing has been set', () => {
             commandBuilder.call.should.be.equal('xfreerdp');
-        })
+        });
     });
 });
