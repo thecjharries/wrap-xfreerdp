@@ -91,9 +91,9 @@ describe('WrapXFreeRdpCommandBuilder', () => {
         });
 
         it('should be a singleton', () => {
-            return commandBuilder.loadEverything(argv)
+            return commandBuilder.loadEverything()
                 .then(() => {
-                    return commandBuilder.loadEverything(argv);
+                    return commandBuilder.loadEverything();
                 })
                 .then((everything: Array<any>) => {
                     readJsonStub.callCount.should.be.equal(1);
@@ -113,4 +113,6 @@ describe('WrapXFreeRdpCommandBuilder', () => {
             (<sinon.SinonStub>fsp.readJson).restore();
         });
     });
+
+
 });

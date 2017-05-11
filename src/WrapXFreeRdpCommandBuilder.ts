@@ -11,7 +11,8 @@ export class WrapXFreeRdpCommandBuilder {
     private JSON_LOCATION: string = path.join(__dirname, 'config/flags-and-regex.json');
     private validatorPromise: Promise<Array<WrapXFreeRdpValidator>> = null;
     private loadEverythingPromise: Promise<Array<any>> = null;
-    private argv: WrapXFreeRdpArguments
+    private argv: WrapXFreeRdpArguments;
+    private call: string = 'xfreerdp';
 
     public constructor(argv: WrapXFreeRdpArguments) {
         this.options = new WrapXFreeRdpOptions();
@@ -25,13 +26,17 @@ export class WrapXFreeRdpCommandBuilder {
         return this.validatorPromise;
     }
 
-    public loadEverything(argv: WrapXFreeRdpArguments): Promise<Array<any>> {
+    public loadEverything(): Promise<Array<any>> {
         if (this.loadEverythingPromise === null) {
             this.loadEverythingPromise = Promise.all([
                 this.loadValidators(),
-                this.options.loadAndAttachConfig(argv)
+                this.options.loadAndAttachConfig(this.argv)
             ]);
         }
         return this.loadEverythingPromise;
+    }
+
+    public attachPlugins() {
+
     }
 }
