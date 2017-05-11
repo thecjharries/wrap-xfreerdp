@@ -56,7 +56,11 @@ export class WrapXFreeRdpOptions {
         return second;
     }
 
-    public attachCliArgumentsToFlags(argv: IWrapXFreeRdpArguments, options: IWrapXFreeRdpFlags): IWrapXFreeRdpFlags {
+    public attachCliArgumentsToFlags(
+        argv: IWrapXFreeRdpArguments,
+        /* tslint:disable-next-line:trailing-comma */
+        options: IWrapXFreeRdpFlags
+    ): IWrapXFreeRdpFlags {
         delete argv._;
         delete argv.configFile;
         return this.copyAndOverwriteFromFirstToSecond(argv, options);
@@ -76,11 +80,19 @@ export class WrapXFreeRdpOptions {
                 return this.loadConfigFrom(this.DIRECTORY_CONFIG_PATH, false);
             })
             .then((directoryOptions: IWrapXFreeRdpFlags) => {
-                this.internalFlags = this.copyAndOverwriteFromFirstToSecond(directoryOptions, this._flags);
+                this.internalFlags = this.copyAndOverwriteFromFirstToSecond(
+                    directoryOptions,
+                    /* tslint:disable-next-line:trailing-comma */
+                    this.internalFlags
+                );
                 if (argv.configFile) {
                     return this.loadConfigFrom(argv.configFile, true)
                         .then((randomOptions) => {
-                            return this.copyAndOverwriteFromFirstToSecond(randomOptions, this._flags);
+                            return this.copyAndOverwriteFromFirstToSecond(
+                                randomOptions,
+                                /* tslint:disable-next-line:trailing-comma */
+                                this.internalFlags
+                            );
                         });
                 }
                 return this.internalFlags;
@@ -88,7 +100,11 @@ export class WrapXFreeRdpOptions {
             .then((options) => {
                 this.internalFlags = options;
                 if (options[target]) {
-                    return this.copyAndOverwriteFromFirstToSecond(options[target], this._flags);
+                    return this.copyAndOverwriteFromFirstToSecond(
+                        options[target],
+                        /* tslint:disable-next-line:trailing-comma */
+                        this.internalFlags
+                    );
                 }
                 return this.internalFlags;
             })
