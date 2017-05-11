@@ -269,9 +269,9 @@ describe('WrapXFreeRdpOptions', () => {
         });
     });
 
-    describe('get flags', () => {
+    describe('get flags()', () => {
         it('should return default when nothing has been set', () => {
-            options.flags.should.be.null;
+            expect(options.flags).to.be.null;
         });
     })
 });
