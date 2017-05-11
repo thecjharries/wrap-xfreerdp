@@ -41,6 +41,12 @@ export class WrapXFreeRdpCommandBuilder {
     }
 
     public attachPlugins() {
-
+        if (typeof this.options.flags.plugins !== 'undefined') {
+            if ((<Array<string>>this.options.flags.plugins).length > 0) {
+                for (let plugin of (<Array<string>>this.options.flags.plugins)) {
+                    this._call += ` --plugin ${plugin}`;
+                }
+            }
+        }
     }
 }

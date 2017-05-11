@@ -4,4 +4,5 @@ export interface WrapXFreeRdpFlags {
     geometry?: string;
     domain?: string;
     user?: string;
+    plugins?: Array<string>;
 };

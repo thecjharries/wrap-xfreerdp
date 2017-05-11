@@ -87,7 +87,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                 ]
             );
             readJsonStub.resolves([]);
-            loadAndAttachConfigStub = sinon.stub(WrapXFreeRdpOptions.prototype, 'loadAndAttachConfig').resolves({loaded: true});
+            loadAndAttachConfigStub = sinon.stub(WrapXFreeRdpOptions.prototype, 'loadAndAttachConfig').resolves({ loaded: true });
         });
 
         it('should be a singleton', () => {
@@ -101,7 +101,7 @@ describe('WrapXFreeRdpCommandBuilder', () => {
                     everything.length.should.be.equal(2);
                     everything[0].should.be.a('Array');
                     everything[0].length.should.be.equal(3);
-                    everything[1].should.be.deep.equal({loaded: true});
+                    everything[1].should.be.deep.equal({ loaded: true });
                 })
         });
 
@@ -114,15 +114,47 @@ describe('WrapXFreeRdpCommandBuilder', () => {
         });
     });
 
+    describe('.attachPlugins()', () => {
+        // TODO: remove any cast on @types/sinon update
+        let flagsStub: sinon.SinonStub | any;
+
+        beforeEach(() => {
+            // TODO: remove any cast on @types/sinon update
+            flagsStub = (<any>sinon.stub(WrapXFreeRdpOptions.prototype, 'flags'))
+        });
+
+        it('should do nothing with no plugins', () => {
+            flagsStub.get(() => {
+                return {};
+            });
+            commandBuilder.attachPlugins();
+            commandBuilder.call.should.be.equal('xfreerdp');
+            flagsStub.get(() => {
+                let retVal: any = {};
+                retVal.plugins = [];
+                return retVal;
+            });
+            commandBuilder.attachPlugins();
+            commandBuilder.call.should.be.equal('xfreerdp');
+
+        });
+
+        it('should attach an array of plugin', () => {
+            flagsStub.get(() => {
+                return { plugins: ['cliprdr', 'cliprdr2'] }
+            });
+            commandBuilder.attachPlugins();
+            commandBuilder.call.should.be.equal('xfreerdp --plugin cliprdr --plugin cliprdr2');
+        });
+
+        afterEach(() => {
+            flagsStub.restore();
+        });
+    });
+
     describe('get call()', () => {
         it('should return default when nothing has been set', () => {
             commandBuilder.call.should.be.equal('xfreerdp');
         })
-    });
-
-    describe('.attachPlugins()', () => {
-        it('should do nothing with no plugins', () => {
-            commandBuilder.attachPlugins();
-        });
     });
 });
